@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FragmentiRep</string>
+    <string name="title_activity_details" translatable="false">Detalji</string>
+    <string name="menu_share">Podijeli</string>
+    <string name="menu_open_url">Otvori</string>
+    <string name="title_activity_image">Slika</string>
+</resources>
