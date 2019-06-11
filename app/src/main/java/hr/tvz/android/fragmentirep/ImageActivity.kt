@@ -12,9 +12,10 @@ class ImageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
 
-        val item = intent.getParcelableExtra<Beer>(BeersAdapter.ViewHolder.BEER_KEY)
+        val item: Beer? = intent.getParcelableExtra<Beer>(BeersAdapter.ViewHolder.BEER_KEY)
         Picasso.get()
-            .load(item.imageUrl)
+            .load(item?.imageUrl)
+            .placeholder(R.mipmap.ic_launcher)
             .error(R.mipmap.ic_launcher)
             .into(beer_image)
     }

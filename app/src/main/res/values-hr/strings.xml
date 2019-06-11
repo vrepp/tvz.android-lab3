@@ -5,4 +5,5 @@
     <string name="menu_share">Podijeli</string>
     <string name="menu_open_url">Otvori</string>
     <string name="title_activity_image">Slika</string>
+    <string name="menu_home">Lista</string>
 </resources>

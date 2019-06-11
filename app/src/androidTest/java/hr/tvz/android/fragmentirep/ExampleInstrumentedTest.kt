@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("hr.tvz.android.listarep", appContext.packageName)
+        assertEquals("hr.tvz.android.fragmentirep", appContext.packageName)
     }
 }

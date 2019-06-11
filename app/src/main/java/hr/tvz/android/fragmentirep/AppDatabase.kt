@@ -1,55 +1,39 @@
 package hr.tvz.android.fragmentirep
 
-import android.content.IntentFilter
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import com.raizlabs.android.dbflow.annotation.Database
+import com.raizlabs.android.dbflow.annotation.Migration
+import com.raizlabs.android.dbflow.sql.migration.BaseMigration
+import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper
 
-class MainActivity : AppCompatActivity() {
+@Database(name = AppDatabase.NAME, version = AppDatabase.VERSION, generatedClassSeparator = "_")
+object AppDatabase {
+    const val NAME: String = "FragmentiRepDB"
+    const val VERSION: Int = 1
+}
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: BeersAdapter
-    private var beers = ArrayList<Beer>()
+// Initial migration (creating database)
+@Migration(version = 0, database = AppDatabase::class)
+class DBCreation : BaseMigration() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        registerReveivers()
-
-        beers = getBeers()
-
-        setupRecyclerView()
-    }
-
-    private fun registerReveivers() {
-        registerReceiver(BatteryLowReceiver(), IntentFilter("android.intent.action.BATTERY_LOW"))
-    }
-
-    private fun setupRecyclerView() {
-        linearLayoutManager = LinearLayoutManager(this)
-        adapter = BeersAdapter(beers)
-
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.adapter = adapter
+    override fun migrate(database: DatabaseWrapper) {
+        Beers.insertBeers(getBeers())
     }
 
     private fun getBeers(): ArrayList<Beer> {
         // mock
         return arrayListOf<Beer>(
             Beer(
-                "Blue",
-                "Labatt Breweries Ontario",
-                "5%",
-                "https://d9n7s0cf8h13p.cloudfront.net/images/products/94449_l.png",
-                "https://www.thebeerguy.ca"
-            ),
-            Beer(
                 "Canadian",
                 "Molson'S Brewery Of Canada Limited",
                 "5%",
                 "https://d9n7s0cf8h13p.cloudfront.net/images/products/60483_l.png",
+                "https://www.thebeerguy.ca"
+            ),
+            Beer(
+                "Blue",
+                "Labatt Breweries Ontario",
+                "5%",
+                "https://d9n7s0cf8h13p.cloudfront.net/images/products/94449_l.png",
                 "https://www.thebeerguy.ca"
             ),
             Beer(
