@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.activity_details.*
-import kotlinx.android.synthetic.main.content_details.*
 
 class DetailsActivity : AppCompatActivity() {
 
@@ -21,8 +18,24 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_details)
         setSupportActionBar(toolbar)
 
-        item = intent.getParcelableExtra<Beer>(BeersAdapter.ViewHolder.BEER_KEY).also { bindBeer(it) }
+        item = intent.getParcelableExtra<Beer>(BeersAdapter.ViewHolder.ITEM_KEY)
 
+        if (savedInstanceState == null) {
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction.
+            val fragment = DetailFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(
+                        BeersAdapter.ViewHolder.ITEM_KEY,
+                        intent.getParcelableExtra<Beer>(BeersAdapter.ViewHolder.ITEM_KEY)
+                    )
+                }
+            }
+
+            supportFragmentManager.beginTransaction()
+                .add(R.id.item_detail_container, fragment)
+                .commit()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -53,25 +66,6 @@ class DetailsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(it.url)
             startActivity(intent)
-        }
-    }
-
-    private fun bindBeer(beer: Beer) {
-        beer_name.text = beer.name
-        beer_brewer.text = beer.brewer
-        beer_alcohol.text = beer.alcohol
-        Picasso.get()
-            .load(beer.imageUrl)
-            .error(R.mipmap.ic_launcher)
-            .into(beer_image)
-
-        beer_image.setOnClickListener{ v: View? ->
-            v?.let {
-                val context = it.context
-                val showImageIntent = Intent(context, ImageActivity::class.java)
-                showImageIntent.putExtra(BeersAdapter.ViewHolder.BEER_KEY, beer)
-                context.startActivity(showImageIntent)
-            }
         }
     }
 }
